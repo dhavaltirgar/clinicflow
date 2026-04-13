@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action }} — ClinicFlow{% endblock %}
+{% block page_title %}{{ action }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body p-4">
+
+        <form method="POST" novalidate>
+          {% csrf_token %}
+
+          <div class="row">
+            <!-- First Name -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-500">
+                First Name <span class="text-danger">*</span>
+              </label>
+              {{ form.first_name }}
+              {% if form.first_name.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.first_name.errors.0 }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">
+                Last Name <span class="text-danger">*</span>
+              </label>
+              {{ form.last_name }}
+              {% if form.last_name.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.last_name.errors.0 }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Email -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">
+                Email <span class="text-danger">*</span>
+              </label>
+              {{ form.email }}
+              {% if form.email.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.email.errors.0 }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Phone -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">
+                Phone <span class="text-danger">*</span>
+              </label>
+              {{ form.phone }}
+              {% if form.phone.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.phone.errors.0 }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Date of Birth -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">
+                Date of Birth <span class="text-danger">*</span>
+              </label>
+              {{ form.date_of_birth }}
+              {% if form.date_of_birth.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.date_of_birth.errors.0 }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Gender -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">
+                Gender <span class="text-danger">*</span>
+              </label>
+              {{ form.gender }}
+              {% if form.gender.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.gender.errors.0 }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Blood Group -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Blood Group</label>
+              {{ form.blood_group }}
+            </div>
+          </div>
+
+          <!-- Address -->
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            {{ form.address }}
+          </div>
+
+          <!-- Medical History -->
+          <div class="mb-3">
+            <label class="form-label">Medical History</label>
+            {{ form.medical_history }}
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-circle"></i> {{ action }}
+            </button>
+            <a href="{% url 'patient_list' %}"
+               class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> Cancel
+            </a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

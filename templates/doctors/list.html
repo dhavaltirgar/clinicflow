@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Doctors — ClinicFlow{% endblock %}
+{% block page_title %}Doctors{% endblock %}
+{% block content %}
+<div class="row">
+  {% for doctor in doctors %}
+  <div class="col-md-4 mb-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ doctor }}</h5>
+        <p class="text-muted mb-1">{{ doctor.specialization }}</p>
+        <p class="mb-1">{{ doctor.qualification }}</p>
+        <p class="mb-1">Experience: {{ doctor.experience_years }} years</p>
+        <p class="mb-0">Fee: ₹{{ doctor.consultation_fee }}</p>
+        {% if doctor.is_available %}
+          <span class="badge bg-success mt-2">Available</span>
+        {% else %}
+          <span class="badge bg-danger mt-2">Not Available</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <p class="text-muted text-center">No doctors found.</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

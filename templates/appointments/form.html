@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action }} — ClinicFlow{% endblock %}
+{% block page_title %}{{ action }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body p-4">
+
+        <form method="POST" novalidate>
+          {% csrf_token %}
+
+          <!-- Non-field errors -->
+          {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+            {{ form.non_field_errors.0 }}
+          </div>
+          {% endif %}
+
+          <div class="row">
+            <!-- Patient -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">
+                Patient <span class="text-danger">*</span>
+              </label>
+              {{ form.patient }}
+              {% if form.patient.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.patient.errors.0 }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Doctor -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">
+                Doctor <span class="text-danger">*</span>
+              </label>
+              {{ form.doctor }}
+              {% if form.doctor.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.doctor.errors.0 }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Date -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">
+                Date <span class="text-danger">*</span>
+              </label>
+              {{ form.appointment_date }}
+              {% if form.appointment_date.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.appointment_date.errors.0 }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Time -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">
+                Time <span class="text-danger">*</span>
+              </label>
+              {{ form.appointment_time }}
+              {% if form.appointment_time.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.appointment_time.errors.0 }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Status</label>
+              {{ form.status }}
+            </div>
+          </div>
+
+          <!-- Reason -->
+          <div class="mb-3">
+            <label class="form-label">
+              Reason for Visit <span class="text-danger">*</span>
+            </label>
+            {{ form.reason }}
+            {% if form.reason.errors %}
+              <div class="text-danger small mt-1">
+                {{ form.reason.errors.0 }}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Notes -->
+          <div class="mb-3">
+            <label class="form-label">Additional Notes</label>
+            {{ form.notes }}
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-circle"></i> {{ action }}
+            </button>
+            <a href="{% url 'appointment_list' %}"
+               class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> Cancel
+            </a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

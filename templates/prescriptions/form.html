@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Write Prescription — ClinicFlow{% endblock %}
+{% block page_title %}Write Prescription{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+
+    <!-- Appointment Info Card -->
+    <div class="card mb-3" style="border-left:4px solid #3498db;">
+      <div class="card-body py-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <strong>Patient:</strong> {{ appointment.patient }} &nbsp;|&nbsp;
+            <strong>Date:</strong> {{ appointment.appointment_date }} &nbsp;|&nbsp;
+            <strong>Reason:</strong> {{ appointment.reason }}
+          </div>
+          <span class="badge bg-info">{{ appointment.status|title }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prescription Form -->
+    <div class="card">
+      <div class="card-body p-4">
+        <form method="POST" novalidate>
+          {% csrf_token %}
+
+          <!-- Appointment (hidden — pre-selected) -->
+          <div class="mb-3" style="display:none;">
+            {{ form.appointment }}
+          </div>
+
+          <!-- Diagnosis -->
+          <div class="mb-3">
+            <label class="form-label fw-500">
+              Diagnosis <span class="text-danger">*</span>
+            </label>
+            {{ form.diagnosis }}
+            {% if form.diagnosis.errors %}
+              <div class="text-danger small mt-1">
+                {{ form.diagnosis.errors.0 }}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Medicines -->
+          <div class="mb-3">
+            <label class="form-label fw-500">
+              Medicines <span class="text-danger">*</span>
+            </label>
+            {{ form.medicines }}
+            <small class="text-muted">
+              Separate multiple medicines with commas
+            </small>
+            {% if form.medicines.errors %}
+              <div class="text-danger small mt-1">
+                {{ form.medicines.errors.0 }}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Instructions -->
+          <div class="mb-3">
+            <label class="form-label">Instructions</label>
+            {{ form.instructions }}
+          </div>
+
+          <!-- Follow-up Date -->
+          <div class="mb-3">
+            <label class="form-label">Follow-up Date</label>
+            {{ form.follow_up_date }}
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success">
+              <i class="bi bi-check-circle"></i> Save Prescription
+            </button>
+            <a href="{% url 'appointment_list' %}"
+               class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> Cancel
+            </a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

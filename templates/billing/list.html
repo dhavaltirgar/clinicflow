@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Billing — ClinicFlow{% endblock %}
+{% block page_title %}Billing{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between mb-3">
+      <h5 class="card-title mb-0">All Bills</h5>
+      <a href="{% url 'bill_add' %}" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus-circle"></i> Create Bill
+      </a>
+    </div>
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Invoice #</th>
+          <th>Patient</th>
+          <th>Amount</th>
+          <th>Payment</th>
+          <th>Method</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bill in bills %}
+        <tr>
+          <td><strong>{{ bill.invoice_number }}</strong></td>
+          <td>{{ bill.patient }}</td>
+          <td>₹{{ bill.total_amount }}</td>
+          <td>
+            {% if bill.payment_status == 'paid' %}
+              <span class="badge bg-success">Paid</span>
+            {% elif bill.payment_status == 'pending' %}
+              <span class="badge bg-warning text-dark">Pending</span>
+            {% else %}
+              <span class="badge bg-info">Partial</span>
+            {% endif %}
+          </td>
+          <td>{{ bill.payment_method|title }}</td>
+          <td>{{ bill.created_at|date:"d M Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="text-center text-muted py-4">
+            No bills yet.
+            <a href="{% url 'bill_add' %}">Create first bill!</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

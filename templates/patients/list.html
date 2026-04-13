@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Patients — ClinicFlow{% endblock %}
+{% block page_title %}Patients{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="card-title mb-0">
+        All Patients
+        <span class="badge bg-secondary ms-2">{{ total }}</span>
+      </h5>
+      <a href="{% url 'patient_add' %}" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus-circle"></i> Add Patient
+      </a>
+    </div>
+
+    <!-- Search Bar -->
+    <form method="GET" class="mb-3">
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+        <input type="text" name="search"
+               class="form-control"
+               placeholder="Search by name or phone..."
+               value="{{ search }}">
+        <button class="btn btn-outline-primary" type="submit">
+          Search
+        </button>
+        {% if search %}
+        <a href="{% url 'patient_list' %}"
+           class="btn btn-outline-secondary">
+          Clear
+        </a>
+        {% endif %}
+      </div>
+    </form>
+
+    <!-- Patient Table -->
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Gender</th>
+          <th>Blood</th>
+          <th>Age</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for patient in patients %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>
+            <a href="{% url 'patient_detail' patient.pk %}"
+               class="text-decoration-none fw-500">
+              {{ patient }}
+            </a>
+          </td>
+          <td>{{ patient.phone }}</td>
+          <td>{{ patient.email }}</td>
+          <td>{{ patient.gender|title }}</td>
+          <td>
+            <span class="badge bg-danger">
+              {{ patient.blood_group|default:"—" }}
+            </span>
+          </td>
+          <td>{{ patient.age }} yrs</td>
+          <td>
+            <a href="{% url 'patient_detail' patient.pk %}"
+               class="btn btn-sm btn-info text-white">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a href="{% url 'patient_edit' patient.pk %}"
+               class="btn btn-sm btn-warning">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <a href="{% url 'patient_delete' patient.pk %}"
+               class="btn btn-sm btn-danger">
+              <i class="bi bi-trash"></i>
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8" class="text-center text-muted py-4">
+            {% if search %}
+              No patients found for "{{ search }}"
+            {% else %}
+              No patients yet.
+              <a href="{% url 'patient_add' %}">Add your first patient!</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+{% endblock %}
