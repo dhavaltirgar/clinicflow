@@ -1,6 +1,7 @@
 from django import forms
 from .models import Prescription
 from appointments.models import Appointment
+from django.utils import timezone   
 
 
 class PrescriptionForm(forms.ModelForm):
@@ -32,7 +33,8 @@ class PrescriptionForm(forms.ModelForm):
                             }),
             'follow_up_date': forms.DateInput(attrs={
                               'class': 'form-control',
-                              'type' : 'date'
+                              'type' : 'date',
+                              'min'  : timezone.now().date().strftime('%Y-%m-%d')
                             }),
         }
 
@@ -63,3 +65,15 @@ class PrescriptionForm(forms.ModelForm):
             raise forms.ValidationError('Please enter valid medicine names.')
         # Return cleaned comma-separated string
         return ', '.join(medicine_list)
+    
+    # Follow up date must be in the future
+    def clean_follow_up_date(self):
+        follow_up_date = self.cleaned_data.get('follow_up_date')
+
+        if follow_up_date:
+            if follow_up_date <= timezone.now().date():
+                raise forms.ValidationError(
+                    "Follow-up date must be a future date!"
+                )
+
+        return follow_up_date

@@ -99,3 +99,16 @@ def prescription_list(request):
     return render(request, 'prescriptions/list.html', {
         'prescriptions': prescriptions
     })
+
+@login_required
+@doctor_required
+def prescription_edit(request, pk):
+    prescription = get_object_or_404(Prescription, pk=pk)
+    if request.method == 'POST':
+        form = PrescriptionForm(request.POST, instance=prescription)
+        if form.is_valid():
+            form.save()
+            return redirect('prescription_detail', pk=pk)
+    else:
+        form = PrescriptionForm(instance=prescription)
+    return render(request, 'prescriptions/form.html', {'form': form})

@@ -76,3 +76,25 @@ class BillForm(forms.ModelForm):
                 'Other charges cannot be negative.'
             )
         return charges or 0
+    
+    # Validate appointment — must be completed before billing
+    def clean_appointment(self):
+        appointment = self.cleaned_data.get('appointment')
+
+        if not appointment:
+            raise forms.ValidationError("Please select an appointment.")
+
+        # Check appointment is completed
+        if appointment.status != 'completed':
+            raise forms.ValidationError(
+                f"Cannot create bill! Appointment status is '{appointment.status}'. "
+                f"Appointment must be completed first."
+            )
+
+        # Check bill doesn't already exist
+        if Bill.objects.filter(appointment=appointment).exists():
+            raise forms.ValidationError(
+                "Bill already exists for this appointment!"
+            )
+
+        return appointment
