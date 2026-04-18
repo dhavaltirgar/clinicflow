@@ -1,0 +1,24 @@
+# Virtual Environment
+venv/
+
+# Environment variables
+.env
+
+# Celery
+celerybeat-schedule
+celerybeat-schedule-shm
+celerybeat-schedule-wal
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Django
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# VS Code
+.vscode/
