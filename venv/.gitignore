@@ -17,3 +17,8 @@ staticfiles/
 
 # VS Code
 .vscode/
+
+# Celery
+celerybeat-schedule
+celerybeat-schedule-shm
+celerybeat-schedule-wal

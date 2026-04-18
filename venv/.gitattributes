@@ -1,0 +1,5 @@
+venv/* linguist-vendored
+static/* linguist-vendored
+media/* linguist-vendored
+*.py linguist-language=Python
+*.html linguist-language=HTML
