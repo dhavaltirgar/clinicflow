@@ -190,3 +190,49 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 AUTH_USER_MODEL = 'accounts.User'
 #💡 Why? By default Django uses its own User model. 
 #This line tells Django — "use MY custom User model from the accounts app instead. 
+
+# ======================
+# CELERY CONFIGURATION
+# ======================
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+
+# Celery Beat Schedule (Periodic Tasks)
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+
+    # Task 1: Check every 15 minutes and send reminders
+    'send-appointment-reminders': {
+        'task': 'appointments.tasks.send_appointment_reminder',
+        'schedule': crontab(minute='*/15'),
+    },
+
+    # Task 2: Send daily summary to admin at 8:00 AM every day
+    'send-daily-summary': {
+        'task': 'appointments.tasks.send_daily_summary',
+        'schedule': crontab(hour=8, minute=0),
+    },
+
+    # Task 3: Mark past appointments as completed every hour
+    'mark-completed-appointments': {
+        'task': 'appointments.tasks.mark_completed_appointments',
+        'schedule': crontab(minute=0),
+    },
+}
+
+# ======================
+# EMAIL CONFIGURATION
+# ======================
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER', default='')
+ADMIN_EMAIL = env('EMAIL_HOST_USER', default='')
